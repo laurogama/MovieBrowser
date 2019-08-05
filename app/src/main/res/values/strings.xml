@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Movie Browser</string>
+    <string name="no_movies_found">No movies found!</string>
+    <string name="error_loading_movies">Error loading movies!</string>
+    <string name="movie_title">Movie Title!</string>
+    <string name="tv_placeholder_release_date">31/12/2019</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="placeholder_vote_average">3.5</string>
+    <string name="placeholder_synopsis">King Arthur and his Knights of the Round Table embark on a surreal, low-budget search for the Holy Grail, encountering many, very silly obstacles.</string>
+    <string name="most_popular">most popular</string>
+    <string name="most_rated">most rated</string>
+    <string name="error_reading_movie_data">Error reading movie data!</string>
+    <string name="star">Star</string>
+</resources>
