@@ -1,11 +1,13 @@
 package com.android.example.mypopularmovies.models;
 
+import com.android.example.mypopularmovies.BuildConfig;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface ImdbApi {
-    String API_KEY = "<INSERT YOUR KEY>";
+    String API_KEY = BuildConfig.ApiKey;
     String IMAGE_SIZE_W185 = "w185";
     String IMAGE_SIZE_ORIGINAL = "original";
 
