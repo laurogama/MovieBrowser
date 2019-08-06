@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/iv_poster"
-        android:layout_width="416dp"
-        android:layout_height="405dp"
+        android:layout_width="230dp"
+        android:layout_height="match_parent"
         android:contentDescription="@string/movie_poster"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,60 +20,58 @@
         android:id="@+id/tv_movie_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+
+        android:layout_marginTop="8dp"
         android:text="@string/movie_title"
         android:textColor="@android:color/white"
         android:textSize="@dimen/sz_movie_title"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_poster" />
+        app:layout_constraintStart_toEndOf="@+id/iv_poster"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_release_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="@string/tv_placeholder_release_date"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_poster"
         app:layout_constraintTop_toBottomOf="@+id/tv_movie_title" />
 
     <TextView
         android:id="@+id/tv_vote_average"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="@string/placeholder_vote_average"
         android:textColor="@android:color/white"
         android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_poster"
         app:layout_constraintTop_toBottomOf="@+id/tv_release_date" />
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/star"
         android:src="@drawable/star"
-        app:layout_constraintBottom_toTopOf="@+id/tv_plot_synopsis"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_vote_average"
         app:layout_constraintStart_toEndOf="@+id/tv_vote_average"
         app:layout_constraintTop_toBottomOf="@+id/tv_release_date"
         app:layout_constraintVertical_bias="0.761" />
 
-
     <TextView
         android:id="@+id/tv_plot_synopsis"
-        android:layout_width="wrap_content"
-        android:layout_height="223dp"
+        android:layout_width="431dp"
+        android:layout_height="284dp"
         android:padding="2dp"
         android:scrollbars="vertical"
         android:text="@string/placeholder_synopsis"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_poster"
         app:layout_constraintTop_toBottomOf="@+id/tv_vote_average" />
 
 
@@ -91,4 +89,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
