@@ -2,12 +2,17 @@ package com.android.example.mypopularmovies.models;
 
 import java.util.List;
 
-public class ApiResponse {
+public class ReviewResponse {
+    private Integer page;
+    private List<ReviewModel> results = null;
+    private Integer totalResults;
+    private Integer totalPages;
+
     public Integer getPage() {
         return page;
     }
 
-    public List<MovieModel> getResults() {
+    public List<ReviewModel> getResults() {
         return results;
     }
 
@@ -18,11 +23,6 @@ public class ApiResponse {
     public Integer getTotalPages() {
         return totalPages;
     }
-
-    private Integer page;
-    private List<MovieModel> results = null;
-    private Integer totalResults;
-    private Integer totalPages;
 
 
 }

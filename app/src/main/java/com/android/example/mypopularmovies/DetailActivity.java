@@ -7,44 +7,86 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.example.mypopularmovies.controller.ImdbController;
 import com.android.example.mypopularmovies.models.ImdbApi;
 import com.android.example.mypopularmovies.models.MovieModel;
+import com.android.example.mypopularmovies.models.ReviewModel;
+import com.android.example.mypopularmovies.models.ReviewResponse;
+import com.android.example.mypopularmovies.models.TrailerModel;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.android.example.mypopularmovies.utils.ImageUtils.buildPosterUrl;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements Callback<ReviewResponse> {
     public static final String EXTRA_MOVIE = "com.android.example.mypopularmovies.EXTRA_MOVIE";
-    private MovieModel movieModel;
-
+    MovieModel movieModel;
+    @BindView(R.id.tv_movie_title)
+    TextView mTitle;
+    @BindView(R.id.tv_release_date)
+    TextView mReleaseDate;
+    @BindView(R.id.iv_poster)
+    ImageView mPosterThumbnail;
+    @BindView(R.id.tv_vote_average)
+    TextView mVoteAverage;
+    @BindView(R.id.tv_plot_synopsis)
+    TextView mOverview;
+    @BindView(R.id.rv_trailers)
+    RecyclerView mTrailerRecyclerView;
+    @BindView(R.id.rv_reviews)
+    RecyclerView mReviewRecyclerView;
+    @BindView(R.id.tv_error_parseling)
+    TextView mErrorLoading;
+    private ImdbController mImdbController = new ImdbController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
+        RecyclerView.LayoutManager reviewlayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        RecyclerView.LayoutManager trailerlayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+
+        mTrailerRecyclerView.setLayoutManager(trailerlayoutManager);
+        mReviewRecyclerView.setLayoutManager(reviewlayoutManager);
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_MOVIE)) {
+
             movieModel = intent.getParcelableExtra(EXTRA_MOVIE);
 
             if (movieModel != null) {
                 populateMovieDetails(movieModel);
+                requestReviews(movieModel.getId());
             }
         } else {
-            TextView mErrorLoading = findViewById(R.id.tv_error_parseling);
             mErrorLoading.setVisibility(View.VISIBLE);
         }
     }
 
+
+    private void requestTrailers(Integer movieId) {
+//        mImdbController.loadTrailers(movieId, this);
+    }
+
+    private void requestReviews(Integer movieId) {
+        mImdbController.loadReviews(movieId, this);
+    }
+
     private void populateMovieDetails(MovieModel movieModel) {
-        TextView mTitle = findViewById(R.id.tv_movie_title);
+
         mTitle.setText(movieModel.getTitle());
-        TextView mReleaseDate = findViewById(R.id.tv_release_date);
-        ImageView mPosterThumbnail = findViewById(R.id.iv_poster);
-        TextView mVoteAverage = findViewById(R.id.tv_vote_average);
         mVoteAverage.setText(String.valueOf(movieModel.getVote_average()));
         mReleaseDate.setText(String.format("(%s)", movieModel.getRelease_date().substring(0, 4)));
-        TextView mOverview = findViewById(R.id.tv_plot_synopsis);
         mOverview.setText(movieModel.getOverview());
         Picasso.get()
                 .load(
@@ -52,6 +94,44 @@ public class DetailActivity extends AppCompatActivity {
                 )
                 .error(R.drawable.placeholder)
                 .into(mPosterThumbnail);
+
+    }
+
+    @Override
+    public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
+        if (response.isSuccessful()) {
+            ReviewResponse reviewResponse = response.body();
+            updateReviewRecyclerView(reviewResponse.getResults());
+        } else {
+            System.out.println(response.headers().toString());
+            System.out.println(response.code());
+        }
+    }
+
+    private void updateReviewRecyclerView(List<ReviewModel> reviews) {
+        //TODO set listAdapter for reviews
+        mReviewRecyclerView.setAdapter(new ReviewAdapter(reviews, this::onReviewListItemClick));
+
+    }
+
+    public void onReviewListItemClick(ReviewModel clickedReview) {
+//        Intent intent = new Intent(this, DetailActivity.class);
+//        intent.putExtra(DetailActivity.EXTRA_MOVIE, clickedMovie);
+//        startActivity(intent);
+    }
+
+    private void updateTrailerRecyclerView(List<TrailerModel> trailers) {
+        //TODO set listAdapter for reviews
+
+    }
+
+    @Override
+    public void onFailure(Call<ReviewResponse> call, Throwable t) {
+        showErrorRetrievingReviews();
+        t.printStackTrace();
+    }
+
+    private void showErrorRetrievingReviews() {
 
     }
 }

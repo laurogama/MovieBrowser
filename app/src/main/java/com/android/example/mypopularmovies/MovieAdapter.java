@@ -42,7 +42,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-
         Picasso.get()
                 .load(
                         buildPosterUrl(movies.get(position).getPoster_path(), ImdbApi.IMAGE_SIZE_W185)

@@ -28,6 +28,7 @@ public class MovieModel implements Parcelable {
     private String release_date;
     private String releaseDate;
     private String posterUrl;
+    private boolean favorite;
 
     private MovieModel(Parcel in) {
         if (in.readByte() == 0) {
@@ -213,5 +214,13 @@ public class MovieModel implements Parcelable {
         dest.writeString(release_date);
         dest.writeString(releaseDate);
         dest.writeString(posterUrl);
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

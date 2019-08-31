@@ -2,4 +2,5 @@
     <dimen name="sz_movie_title">22sp</dimen>
     <dimen name="poster_width">185dp</dimen>
     <dimen name="poster_height">185dp</dimen>
+    <dimen name="title_text">22sp</dimen>
 </resources>
