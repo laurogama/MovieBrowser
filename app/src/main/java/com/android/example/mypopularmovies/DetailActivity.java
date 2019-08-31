@@ -16,6 +16,7 @@ import com.android.example.mypopularmovies.models.MovieModel;
 import com.android.example.mypopularmovies.models.ReviewModel;
 import com.android.example.mypopularmovies.models.ReviewResponse;
 import com.android.example.mypopularmovies.models.TrailerModel;
+import com.android.example.mypopularmovies.models.TrailerResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -28,7 +29,7 @@ import retrofit2.Response;
 
 import static com.android.example.mypopularmovies.utils.ImageUtils.buildPosterUrl;
 
-public class DetailActivity extends AppCompatActivity implements Callback<ReviewResponse> {
+public class DetailActivity extends AppCompatActivity {
     public static final String EXTRA_MOVIE = "com.android.example.mypopularmovies.EXTRA_MOVIE";
     MovieModel movieModel;
     @BindView(R.id.tv_movie_title)
@@ -67,6 +68,7 @@ public class DetailActivity extends AppCompatActivity implements Callback<Review
             if (movieModel != null) {
                 populateMovieDetails(movieModel);
                 requestReviews(movieModel.getId());
+                requestTrailers(movieModel.getId());
             }
         } else {
             mErrorLoading.setVisibility(View.VISIBLE);
@@ -75,11 +77,46 @@ public class DetailActivity extends AppCompatActivity implements Callback<Review
 
 
     private void requestTrailers(Integer movieId) {
-//        mImdbController.loadTrailers(movieId, this);
+        mImdbController.loadTrailers(movieId, new Callback<TrailerResponse>() {
+
+            @Override
+            public void onResponse(Call<TrailerResponse> call, Response<TrailerResponse> response) {
+                if (response.isSuccessful()) {
+                    TrailerResponse trailerResponse = response.body();
+                    updateTrailerRecyclerView(trailerResponse.getResults());
+                } else {
+                    System.out.println(response.headers().toString());
+                    System.out.println(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TrailerResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     private void requestReviews(Integer movieId) {
-        mImdbController.loadReviews(movieId, this);
+        mImdbController.loadReviews(movieId, new Callback<ReviewResponse>() {
+            @Override
+            public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
+                if (response.isSuccessful()) {
+
+                    ReviewResponse reviewResponse = response.body();
+                    updateReviewRecyclerView(reviewResponse.getResults());
+                } else {
+                    System.out.println(response.headers().toString());
+                    System.out.println(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewResponse> call, Throwable t) {
+                showErrorRetrievingReviews();
+                t.printStackTrace();
+            }
+        });
     }
 
     private void populateMovieDetails(MovieModel movieModel) {
@@ -97,20 +134,18 @@ public class DetailActivity extends AppCompatActivity implements Callback<Review
 
     }
 
-    @Override
-    public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
-        if (response.isSuccessful()) {
-            ReviewResponse reviewResponse = response.body();
-            updateReviewRecyclerView(reviewResponse.getResults());
-        } else {
-            System.out.println(response.headers().toString());
-            System.out.println(response.code());
-        }
-    }
 
     private void updateReviewRecyclerView(List<ReviewModel> reviews) {
         //TODO set listAdapter for reviews
         mReviewRecyclerView.setAdapter(new ReviewAdapter(reviews, this::onReviewListItemClick));
+
+    }
+
+    private void updateTrailerRecyclerView(List<TrailerModel> trailerModelList) {
+        mTrailerRecyclerView.setAdapter(new TrailerAdapter(trailerModelList, this::onTrailerListItemClick));
+    }
+
+    public void onTrailerListItemClick(TrailerModel clickedTrailer) {
 
     }
 
@@ -120,16 +155,6 @@ public class DetailActivity extends AppCompatActivity implements Callback<Review
 //        startActivity(intent);
     }
 
-    private void updateTrailerRecyclerView(List<TrailerModel> trailers) {
-        //TODO set listAdapter for reviews
-
-    }
-
-    @Override
-    public void onFailure(Call<ReviewResponse> call, Throwable t) {
-        showErrorRetrievingReviews();
-        t.printStackTrace();
-    }
 
     private void showErrorRetrievingReviews() {
 

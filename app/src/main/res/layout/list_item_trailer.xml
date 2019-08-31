@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <ImageButton
@@ -14,7 +14,8 @@
 
     <TextView
         android:id="@+id/tv_trailer_name"
+        style="@style/my_text_style"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="THE OLD MAN &amp; THE GUN | Official Trailer [HD] | FOX Searchlight"/>
+        android:text="THE OLD MAN &amp; THE GUN | Official Trailer [HD] | FOX Searchlight" />
 </LinearLayout>

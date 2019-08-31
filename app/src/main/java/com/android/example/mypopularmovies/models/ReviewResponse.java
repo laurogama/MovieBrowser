@@ -2,7 +2,7 @@ package com.android.example.mypopularmovies.models;
 
 import java.util.List;
 
-public class ReviewResponse {
+public class ReviewResponse{
     private Integer page;
     private List<ReviewModel> results = null;
     private Integer totalResults;

@@ -16,7 +16,7 @@ public class TrailerModel implements Parcelable {
             return new TrailerModel[size];
         }
     };
-    private Integer id;
+    private String id;
     private String iso_639_1;
     private String iso_3166_1;
     private String key;
@@ -28,7 +28,7 @@ public class TrailerModel implements Parcelable {
         if (in.readByte() == 0) {
             id = null;
         } else {
-            id = in.readInt();
+            id = in.readString();
         }
         iso_639_1 = in.readString();
         iso_3166_1 = in.readString();
@@ -48,7 +48,7 @@ public class TrailerModel implements Parcelable {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
-            dest.writeInt(id);
+            dest.writeString(id);
         }
         dest.writeString(iso_639_1);
         dest.writeString(iso_3166_1);
@@ -68,7 +68,7 @@ public class TrailerModel implements Parcelable {
         return 0;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
