@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/imageButton"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/play_trailer"
-        app:srcCompat="@drawable/placeholder" />
+        app:srcCompat="@drawable/ic_play_circle_filled_red_24dp" />
 
     <TextView
         android:id="@+id/tv_trailer_name"

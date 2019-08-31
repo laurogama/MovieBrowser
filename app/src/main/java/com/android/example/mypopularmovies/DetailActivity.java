@@ -1,7 +1,10 @@
 package com.android.example.mypopularmovies;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -147,6 +150,16 @@ public class DetailActivity extends AppCompatActivity {
 
     public void onTrailerListItemClick(TrailerModel clickedTrailer) {
 
+        String webUri = String.format("http://www.youtube.com/watch?v=%s", clickedTrailer.getKey());
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("vnd.youtube:%s", clickedTrailer.getKey())));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(webUri));
+        try {
+            startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            Log.d(DetailActivity.class.getSimpleName(), webUri);
+            startActivity(webIntent);
+        }
     }
 
     public void onReviewListItemClick(ReviewModel clickedReview) {
