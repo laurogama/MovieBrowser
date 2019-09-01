@@ -3,4 +3,7 @@
     <dimen name="poster_width">185dp</dimen>
     <dimen name="poster_height">185dp</dimen>
     <dimen name="title_text">22sp</dimen>
+    <dimen name="text_margin">8dp</dimen>
+    <dimen name="text_padding">2dp</dimen>
+    <dimen name="cardview_margin">16dp</dimen>
 </resources>

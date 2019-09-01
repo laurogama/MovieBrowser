@@ -26,6 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,6 +52,8 @@ public class DetailActivity extends AppCompatActivity {
     RecyclerView mReviewRecyclerView;
     @BindView(R.id.tv_error_parseling)
     TextView mErrorLoading;
+    @BindView(R.id.iv_favorite)
+    ImageView mFavoriteIcon;
     private ImdbController mImdbController = new ImdbController();
 
     @Override
@@ -129,8 +132,7 @@ public class DetailActivity extends AppCompatActivity {
         mReleaseDate.setText(String.format("(%s)", movieModel.getRelease_date().substring(0, 4)));
         mOverview.setText(movieModel.getOverview());
         Picasso.get()
-                .load(
-                        buildPosterUrl(movieModel.getPoster_path(), ImdbApi.IMAGE_SIZE_ORIGINAL)
+                .load(buildPosterUrl(movieModel.getPoster_path(), ImdbApi.IMAGE_SIZE_ORIGINAL)
                 )
                 .error(R.drawable.placeholder)
                 .into(mPosterThumbnail);
@@ -151,7 +153,8 @@ public class DetailActivity extends AppCompatActivity {
     public void onTrailerListItemClick(TrailerModel clickedTrailer) {
 
         String webUri = String.format("http://www.youtube.com/watch?v=%s", clickedTrailer.getKey());
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("vnd.youtube:%s", clickedTrailer.getKey())));
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("vnd.youtube:%s",
+                clickedTrailer.getKey())));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(webUri));
         try {
@@ -168,6 +171,15 @@ public class DetailActivity extends AppCompatActivity {
 //        startActivity(intent);
     }
 
+    @OnClick(R.id.iv_favorite)
+    public void onClickFavorite() {
+        movieModel.setFavorite(!movieModel.isFavorite());
+        if (movieModel.isFavorite()) {
+            mFavoriteIcon.setImageDrawable(getDrawable(R.drawable.ic_favorite_red_24dp));
+        } else {
+            mFavoriteIcon.setImageDrawable(getDrawable(R.drawable.ic_favorite_border_red_24dp));
+        }
+    }
 
     private void showErrorRetrievingReviews() {
 
