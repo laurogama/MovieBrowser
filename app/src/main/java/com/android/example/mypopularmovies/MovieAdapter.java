@@ -19,13 +19,9 @@ import static com.android.example.mypopularmovies.utils.ImageUtils.buildPosterUr
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private ArrayList<MovieModel> movies;
     private static final String TAG = "movieAdapter";
     final private ListItemClickListener mOnClickListener;
-
-    public interface ListItemClickListener {
-        void onListItemClick(MovieModel clickedItem);
-    }
+    private ArrayList<MovieModel> movies;
 
     MovieAdapter(List<MovieModel> mMovies, ListItemClickListener listener) {
         this.movies = (ArrayList<MovieModel>) mMovies;
@@ -51,15 +47,22 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     }
 
-
     @Override
     public int getItemCount() {
-        return movies.size();
+        if (movies != null) {
+            return movies.size();
+        } else {
+            return 0;
+        }
     }
 
     public void setMovies(List<MovieModel> movies) {
         this.movies = (ArrayList<MovieModel>) movies;
         notifyDataSetChanged();
+    }
+
+    public interface ListItemClickListener {
+        void onListItemClick(MovieModel clickedItem);
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

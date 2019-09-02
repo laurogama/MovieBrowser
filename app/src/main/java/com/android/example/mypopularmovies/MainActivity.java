@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,13 +38,16 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieRes
     ProgressBar mProgressBar;
     private ImdbController.SortType mSortType = ImdbController.SortType.POPULAR;
     private ImdbController mImdbController = new ImdbController();
+    private MovieBrowserViewModel movieBrowserViewModel;
+    private MovieAdapter favoriteAdapter = new MovieAdapter(null, this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        movieBrowserViewModel = ViewModelProviders.of(this).get(MovieBrowserViewModel.class);
+        movieBrowserViewModel.getFavorites().observe(this, this::onFavoriteChanged);
         setSupportActionBar(toolbar);
 
         recyclerView.setHasFixedSize(true);
@@ -51,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieRes
         recyclerView.setLayoutManager(layoutManager);
         mProgressBar.setVisibility(View.VISIBLE);
         mImdbController.loadMovies(mSortType, this);
+    }
+
+    private void onFavoriteChanged(List<MovieModel> movies) {
+        favoriteAdapter.setMovies(movies);
     }
 
     @Override
@@ -92,14 +100,18 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieRes
 
         switch (id) {
             case R.id.action_sort_popular:
-                Toast.makeText(this, "Sort by Most Popular", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.sort_popular, Toast.LENGTH_LONG).show();
                 mSortType = ImdbController.SortType.POPULAR;
                 mImdbController.loadMovies(mSortType, this);
                 break;
             case R.id.action_sort_rated:
-                Toast.makeText(this, "Sort by Most Rated", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.sort_rated, Toast.LENGTH_LONG).show();
                 mSortType = ImdbController.SortType.RATED;
                 mImdbController.loadMovies(mSortType, this);
+                break;
+            case R.id.action_sort_favorite:
+                Toast.makeText(this, R.string.showing_favorites, Toast.LENGTH_LONG).show();
+                showFavorites();
                 break;
             default:
                 super.onOptionsItemSelected(item);
@@ -115,6 +127,13 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieRes
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_MOVIE, clickedMovie);
         startActivity(intent);
+    }
+
+    private void showFavorites() {
+        mProgressBar.setVisibility(View.GONE);
+        mErrorTextView.setVisibility(View.GONE);
+        recyclerView.setAdapter(favoriteAdapter);
+
     }
 
     private void updateMovies(List<MovieModel> movies) {

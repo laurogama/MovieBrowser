@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:contentDescription="@string/favorite"
+            android:contentDescription="@string/movie"
             android:src="@drawable/ic_favorite_border_red_24dp"
             app:layout_constraintBottom_toTopOf="@+id/tv_plot_synopsis"
             app:layout_constraintEnd_toStartOf="@+id/tv_vote_average"

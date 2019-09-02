@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,14 +56,19 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.iv_favorite)
     ImageView mFavoriteIcon;
     private ImdbController mImdbController = new ImdbController();
+    private MovieBrowserViewModel movieBrowserViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-        RecyclerView.LayoutManager reviewlayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        RecyclerView.LayoutManager trailerlayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        movieBrowserViewModel = ViewModelProviders.of(this).get(MovieBrowserViewModel.class);
+        movieBrowserViewModel.getFavorites().observe(this, this::onFavoriteChanged);
+        RecyclerView.LayoutManager reviewlayoutManager = new LinearLayoutManager(this,
+                RecyclerView.VERTICAL, false);
+        RecyclerView.LayoutManager trailerlayoutManager = new LinearLayoutManager(this,
+                RecyclerView.VERTICAL, false);
 
         mTrailerRecyclerView.setLayoutManager(trailerlayoutManager);
         mReviewRecyclerView.setLayoutManager(reviewlayoutManager);
@@ -79,6 +85,10 @@ public class DetailActivity extends AppCompatActivity {
         } else {
             mErrorLoading.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void onFavoriteChanged(List<MovieModel> movieModels) {
+
     }
 
 
@@ -136,6 +146,9 @@ public class DetailActivity extends AppCompatActivity {
                 )
                 .error(R.drawable.placeholder)
                 .into(mPosterThumbnail);
+        boolean isFavorite = movieBrowserViewModel.isFavorite(movieModel);
+        this.movieModel.setFavorite(isFavorite);
+        updateFavoriteIcon();
 
     }
 
@@ -174,6 +187,11 @@ public class DetailActivity extends AppCompatActivity {
     @OnClick(R.id.iv_favorite)
     public void onClickFavorite() {
         movieModel.setFavorite(!movieModel.isFavorite());
+        movieBrowserViewModel.updateFavorite(movieModel);
+        updateFavoriteIcon();
+    }
+
+    private void updateFavoriteIcon() {
         if (movieModel.isFavorite()) {
             mFavoriteIcon.setImageDrawable(getDrawable(R.drawable.ic_favorite_red_24dp));
         } else {
