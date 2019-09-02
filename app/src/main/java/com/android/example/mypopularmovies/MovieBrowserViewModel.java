@@ -12,8 +12,8 @@ import com.android.example.mypopularmovies.repository.Repository;
 import java.util.List;
 
 public class MovieBrowserViewModel extends AndroidViewModel {
-    private Repository mRepository;
-    private LiveData<List<MovieModel>> mAllFavorites;
+    private final Repository mRepository;
+    private final LiveData<List<MovieModel>> mAllFavorites;
 
     public MovieBrowserViewModel(@NonNull Application application) {
         super(application);
@@ -21,7 +21,7 @@ public class MovieBrowserViewModel extends AndroidViewModel {
         mAllFavorites = mRepository.getAllFavorites();
     }
 
-    public LiveData<List<MovieModel>> getFavorites() {
+    LiveData<List<MovieModel>> getFavorites() {
         return mAllFavorites;
     }
 
@@ -30,7 +30,7 @@ public class MovieBrowserViewModel extends AndroidViewModel {
 
     }
 
-    public void updateFavorite(MovieModel movie) {
+    void updateFavorite(MovieModel movie) {
         if (!mRepository.contains(movie)) {
             movie.setFavorite(true);
             mRepository.insert(movie);
@@ -41,7 +41,7 @@ public class MovieBrowserViewModel extends AndroidViewModel {
 
     }
 
-    public boolean isFavorite(MovieModel movieModel) {
+    boolean isFavorite(MovieModel movieModel) {
         return mRepository.contains(movieModel);
     }
 }

@@ -12,8 +12,8 @@ import com.android.example.mypopularmovies.persistence.MovieDatabase;
 import java.util.List;
 
 public class Repository {
-    private MovieDao mMovieDao;
-    private LiveData<List<MovieModel>> mFavoriteMovies;
+    private final MovieDao mMovieDao;
+    private final LiveData<List<MovieModel>> mFavoriteMovies;
 
     public Repository(Application application) {
         MovieDatabase db = MovieDatabase.getDatabase(application.getApplicationContext());
@@ -39,7 +39,7 @@ public class Repository {
 
     private static class insertAsyncTask extends AsyncTask<MovieModel, Void, Void> {
 
-        private MovieDao mAsyncTaskDao;
+        private final MovieDao mAsyncTaskDao;
 
         insertAsyncTask(MovieDao dao) {
             mAsyncTaskDao = dao;
@@ -53,7 +53,7 @@ public class Repository {
     }
 
     private static class deleteAsyncTask extends AsyncTask<MovieModel, Void, Void> {
-        private MovieDao mAsyncTaskDao;
+        private final MovieDao mAsyncTaskDao;
 
         deleteAsyncTask(MovieDao dao) {
             mAsyncTaskDao = dao;

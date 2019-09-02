@@ -16,15 +16,15 @@ public class TrailerModel implements Parcelable {
             return new TrailerModel[size];
         }
     };
-    private String id;
-    private String iso_639_1;
-    private String iso_3166_1;
-    private String key;
-    private String name;
-    private Integer size;
-    private String type;
+    private final String id;
+    private final String iso_639_1;
+    private final String iso_3166_1;
+    private final String key;
+    private final String name;
+    private final Integer size;
+    private final String type;
 
-    protected TrailerModel(Parcel in) {
+    private TrailerModel(Parcel in) {
         if (in.readByte() == 0) {
             id = null;
         } else {

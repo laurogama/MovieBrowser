@@ -37,9 +37,10 @@ public class MainActivity extends AppCompatActivity implements Callback<MovieRes
     @BindView(R.id.pb_load_movies)
     ProgressBar mProgressBar;
     private ImdbController.SortType mSortType = ImdbController.SortType.POPULAR;
-    private ImdbController mImdbController = new ImdbController();
+    private final ImdbController mImdbController = new ImdbController();
+    @SuppressWarnings("FieldCanBeLocal")
     private MovieBrowserViewModel movieBrowserViewModel;
-    private MovieAdapter favoriteAdapter = new MovieAdapter(null, this);
+    private final MovieAdapter favoriteAdapter = new MovieAdapter(null, this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

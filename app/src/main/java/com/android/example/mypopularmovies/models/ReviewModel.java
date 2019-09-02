@@ -20,7 +20,7 @@ public class ReviewModel implements Parcelable {
     private String id;
     private String url;
 
-    public ReviewModel(Parcel in) {
+    private ReviewModel(Parcel in) {
         author = in.readString();
         content = in.readString();
         id = in.readString();

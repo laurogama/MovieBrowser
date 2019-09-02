@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ReviewResponse{
     private Integer page;
-    private List<ReviewModel> results = null;
+    private final List<ReviewModel> results = null;
     private Integer totalResults;
     private Integer totalPages;
 

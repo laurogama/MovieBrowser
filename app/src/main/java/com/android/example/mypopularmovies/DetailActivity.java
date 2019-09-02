@@ -36,7 +36,7 @@ import static com.android.example.mypopularmovies.utils.ImageUtils.buildPosterUr
 
 public class DetailActivity extends AppCompatActivity {
     public static final String EXTRA_MOVIE = "com.android.example.mypopularmovies.EXTRA_MOVIE";
-    MovieModel movieModel;
+    private MovieModel movieModel;
     @BindView(R.id.tv_movie_title)
     TextView mTitle;
     @BindView(R.id.tv_release_date)
@@ -55,7 +55,7 @@ public class DetailActivity extends AppCompatActivity {
     TextView mErrorLoading;
     @BindView(R.id.iv_favorite)
     ImageView mFavoriteIcon;
-    private ImdbController mImdbController = new ImdbController();
+    private final ImdbController mImdbController = new ImdbController();
     private MovieBrowserViewModel movieBrowserViewModel;
 
     @Override
@@ -163,7 +163,7 @@ public class DetailActivity extends AppCompatActivity {
         mTrailerRecyclerView.setAdapter(new TrailerAdapter(trailerModelList, this::onTrailerListItemClick));
     }
 
-    public void onTrailerListItemClick(TrailerModel clickedTrailer) {
+    private void onTrailerListItemClick(TrailerModel clickedTrailer) {
 
         String webUri = String.format("http://www.youtube.com/watch?v=%s", clickedTrailer.getKey());
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("vnd.youtube:%s",
@@ -178,10 +178,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    public void onReviewListItemClick(ReviewModel clickedReview) {
-//        Intent intent = new Intent(this, DetailActivity.class);
-//        intent.putExtra(DetailActivity.EXTRA_MOVIE, clickedMovie);
-//        startActivity(intent);
+    private void onReviewListItemClick(ReviewModel clickedReview) {
     }
 
     @OnClick(R.id.iv_favorite)

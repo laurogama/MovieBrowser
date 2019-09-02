@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MovieResponse {
     private Integer page;
-    private List<MovieModel> results = null;
+    private final List<MovieModel> results = null;
     private Integer totalResults;
     private Integer totalPages;
 

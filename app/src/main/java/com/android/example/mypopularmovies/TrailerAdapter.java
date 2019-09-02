@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerViewHolder> {
     final private TrailerAdapter.ListItemClickListener mOnClickListener;
-    private ArrayList<TrailerModel> mTrailerList;
+    private final ArrayList<TrailerModel> mTrailerList;
 
     public TrailerAdapter(List<TrailerModel> trailers, ListItemClickListener listener) {
         mTrailerList = (ArrayList<TrailerModel>) trailers;
@@ -57,7 +57,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         @BindView(R.id.tv_trailer_name)
         TextView trailerName;
 
-        public TrailerViewHolder(@NonNull View itemView) {
+        TrailerViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
