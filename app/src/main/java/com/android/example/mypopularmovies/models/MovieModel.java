@@ -3,6 +3,11 @@ package com.android.example.mypopularmovies.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "movies")
 public class MovieModel implements Parcelable {
     public static final Creator<MovieModel> CREATOR = new Creator<MovieModel>() {
         @Override
@@ -15,10 +20,13 @@ public class MovieModel implements Parcelable {
             return new MovieModel[size];
         }
     };
+    @PrimaryKey
     private Integer id;
     private boolean video;
+    @ColumnInfo(name = "title")
     private String title;
     private String synopsis;
+    @ColumnInfo(name = "poster_path")
     private String poster_path;
     private Float vote_average;
     private Double vote_count;
@@ -28,6 +36,7 @@ public class MovieModel implements Parcelable {
     private String release_date;
     private String releaseDate;
     private String posterUrl;
+    private boolean favorite;
 
     private MovieModel(Parcel in) {
         if (in.readByte() == 0) {
@@ -59,6 +68,26 @@ public class MovieModel implements Parcelable {
         release_date = in.readString();
         releaseDate = in.readString();
         posterUrl = in.readString();
+    }
+
+    public MovieModel(Integer id, boolean video, String title, String synopsis, String poster_path,
+                      Float vote_average, Double vote_count, Float popularity, String original_title,
+                      String overview, String release_date, String releaseDate, String posterUrl,
+                      boolean favorite) {
+        this.id = id;
+        this.video = video;
+        this.title = title;
+        this.synopsis = synopsis;
+        this.poster_path = poster_path;
+        this.vote_average = vote_average;
+        this.vote_count = vote_count;
+        this.popularity = popularity;
+        this.original_title = original_title;
+        this.overview = overview;
+        this.release_date = release_date;
+        this.releaseDate = releaseDate;
+        this.posterUrl = posterUrl;
+        this.favorite = favorite;
     }
 
     public Double getVote_count() {
@@ -213,5 +242,13 @@ public class MovieModel implements Parcelable {
         dest.writeString(release_date);
         dest.writeString(releaseDate);
         dest.writeString(posterUrl);
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

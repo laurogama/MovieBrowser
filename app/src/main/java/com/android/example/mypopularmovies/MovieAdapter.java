@@ -19,13 +19,9 @@ import static com.android.example.mypopularmovies.utils.ImageUtils.buildPosterUr
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private ArrayList<MovieModel> movies;
     private static final String TAG = "movieAdapter";
     final private ListItemClickListener mOnClickListener;
-
-    public interface ListItemClickListener {
-        void onListItemClick(MovieModel clickedItem);
-    }
+    private ArrayList<MovieModel> movies;
 
     MovieAdapter(List<MovieModel> mMovies, ListItemClickListener listener) {
         this.movies = (ArrayList<MovieModel>) mMovies;
@@ -42,7 +38,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-
         Picasso.get()
                 .load(
                         buildPosterUrl(movies.get(position).getPoster_path(), ImdbApi.IMAGE_SIZE_W185)
@@ -52,10 +47,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     }
 
-
     @Override
     public int getItemCount() {
-        return movies.size();
+        if (movies != null) {
+            return movies.size();
+        } else {
+            return 0;
+        }
     }
 
     public void setMovies(List<MovieModel> movies) {
@@ -63,9 +61,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         notifyDataSetChanged();
     }
 
+    public interface ListItemClickListener {
+        void onListItemClick(MovieModel clickedItem);
+    }
+
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is just a string in this case
-        ImageView posterImageView;
+        final ImageView posterImageView;
 
         MovieViewHolder(View itemView) {
             super(itemView);
